@@ -1,9 +1,12 @@
 var express = require('express');
 var ex = require('esamecarlo');
 var bodyParser = require('body-parser');
+var cors= require('cors');//solo per usare vue.js
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors());
+
 
 //POST Di Creazione ToDo
 app.post('/list',  function(req, res){
@@ -15,28 +18,15 @@ app.post('/list',  function(req, res){
     res.status(201).json({messagge:'ToDo inserito'});
 })
 
-//DELETE Cancellazione di un ToDo in base all ID
+//GET lettura di tutti gli utenti disponibili
 
-app.delete('/list/:id', function(req, res) {
-    var i = parseInt(req.params.id);
-    res.json(ex.deleteById(i));
+app.get('/users',function(req,res){
+    var people=["mamma","papà","zia","zio","nonna","nonno"];
+    res.json(people);   
 })
-
-//PUT di modifica di ToDo in base all'id
-app.put('/list/:id', function(req, res) {
-	ex.deleteById(req.params.id);
-	res.json(ex.addToDo(a,b,c,d));
-    // var i = parseInt(req.params.id);
-    // //posts[i] = editPost;
-   	// list[i].name = req.body.name;
-    // list[i].description = req.body.description;
-    // list[i].completed = req.body.completed;
-    // list[i].assignedTo = req.body.assignedTo;
-    //res.json(list[i]);
-})
-
 //GET lettura di tutti i ToDo filtrata per utente
-app.get('/list/:assignedTo', function(req, res) {
+
+app.get('/list_users', function(req, res) {
    if (req.query.assignedTo) {
         res.json(ex.findListByAssigned(req.query.assignedTo));
     } else {
@@ -44,16 +34,30 @@ app.get('/list/:assignedTo', function(req, res) {
     } 
 })
 
-//GET lettura di tutti gli utenti disponibili
-app.get('/users',function(req,res){
-	var people=["mamma","papà","zia","zio","nonna","nonno"];
-	res.json(people);	
+
+//DELETE Cancellazione di un ToDo in base all ID
+
+app.delete('/list/:id', function(req, res) {
+    var i = parseInt(req.params.id);
+    ex.deleteById(i)
+    res.json(ex.getList());
 })
 //GET lettura di tutti i ToDo filtrata per stato di completamento
+
 app.get('/completed', function(req, res) {
  
-    res.json(findCompleted());
+    res.json(ex.findCompleted());
 })
+//PUT di modifica di ToDo completed in base all'id
+app.put('/list/:id', function(req, res) {
+    res.status(201).json(ex.changeBool(req.params.id,req.body.completed));
+    
+})
+//PUT di modifica di ToDo description in base all'id
+// app.put('/listen/:id', function(req, res) {
+//     res.status(201).json(ex.changeDescription(req.params.id,req.query.description));
+    
+// })
 
 app.listen(3001);
 module.exports = app;
