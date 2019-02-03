@@ -15,7 +15,7 @@ app.post('/list',  function(req, res){
 	var c=req.body.completed;
 	var d=req.body.assignedTo;
     ex.addToDo(a,b,c,d);
-    res.status(201).json({messagge:'ToDo inserito'});
+    res.status(201).json(ex.getList());
 })
 
 //GET lettura di tutti gli utenti disponibili
@@ -39,7 +39,7 @@ app.get('/list_users', function(req, res) {
 
 app.delete('/list/:id', function(req, res) {
     var i = parseInt(req.params.id);
-    ex.deleteById(i)
+    ex.deleteById(i);
     res.json(ex.getList());
 })
 //GET lettura di tutti i ToDo filtrata per stato di completamento
@@ -50,14 +50,15 @@ app.get('/completed', function(req, res) {
 })
 //PUT di modifica di ToDo completed in base all'id
 app.put('/list/:id', function(req, res) {
-    res.status(201).json(ex.changeBool(req.params.id,req.body.completed));
+    var i = parseInt(req.params.id);
+    res.status(201).json(ex.changeBool(i,req.body.completed));
     
 })
 //PUT di modifica di ToDo description in base all'id
-// app.put('/listen/:id', function(req, res) {
-//     res.status(201).json(ex.changeDescription(req.params.id,req.query.description));
-    
-// })
+// app.put('/list/:id', function(req, res) {
+//     var i = parseInt(req.params.id);
+//     res.status(201).json(ex.changeDescription(i,req.body.description));
+//      })
 
 app.listen(3001);
 module.exports = app;
