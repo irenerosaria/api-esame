@@ -82,7 +82,8 @@ it('Sto testando la lettura dei ToDo true', function(done){
                 done(); 
             });
     });
-it('Sto modificando lo stato di completamento in base all id', function(done){
+it('Sto modificando lo stato di completamento in base all id', 
+    function(done){
         request(app)
             
             .put('/list/0')
@@ -95,10 +96,11 @@ it('Sto modificando lo stato di completamento in base all id', function(done){
                 done(); 
             });
     })
+
 // it('Sto modificando la description in base all id', function(done){
 //         request(app)
             
-//             .put('/listen/0')
+//             .put('/list/0')
 //             .send({description:'scala'})
 //             .set('Accept', 'application/json')
 //             .expect(201)
